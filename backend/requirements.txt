@@ -1,5 +1,7 @@
-flask
-flask-cors
 sqlalchemy==2.0.39
 python-dotenv
 pyodbc
+fastapi
+uvicorn
+pydantic
+requests
