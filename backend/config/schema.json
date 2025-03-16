@@ -1,0 +1,331 @@
+[
+    {
+        "table_name": "answer",
+        "columns": [
+            {
+                "name": "answer_id",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "question_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "answer_text",
+                "type": "VARCHAR COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "rendered_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "submitted_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            }
+        ],
+        "primary_key": "answer_id",
+        "foreign_keys": [
+            {
+                "column": "question_id",
+                "references": "question(question_id)"
+            }
+        ]
+    },
+    {
+        "table_name": "incident",
+        "columns": [
+            {
+                "name": "incident_number",
+                "type": "VARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "text_mme",
+                "type": "TEXT(2147483647) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "updated_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            }
+        ],
+        "primary_key": "incident_number",
+        "foreign_keys": []
+    },
+    {
+        "table_name": "option",
+        "columns": [
+            {
+                "name": "option_id",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "question_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "option_text",
+                "type": "VARCHAR(500) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "next_question_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "is_completed",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            }
+        ],
+        "primary_key": "option_id",
+        "foreign_keys": [
+            {
+                "column": "next_question_id",
+                "references": "question(question_id)"
+            },
+            {
+                "column": "question_id",
+                "references": "question(question_id)"
+            }
+        ]
+    },
+    {
+        "table_name": "question",
+        "columns": [
+            {
+                "name": "question_id",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "workflow_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "question_text",
+                "type": "VARCHAR(1000) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "question_type",
+                "type": "NVARCHAR(20) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "is_required",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "updated_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "next_question_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "is_completed",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            }
+        ],
+        "primary_key": "question_id",
+        "foreign_keys": [
+            {
+                "column": "workflow_id",
+                "references": "workflow(workflow_id)"
+            },
+            {
+                "column": "next_question_id",
+                "references": "question(question_id)"
+            }
+        ]
+    },
+    {
+        "table_name": "response",
+        "columns": [
+            {
+                "name": "incident_number",
+                "type": "VARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "workflow_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "question_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "answer_id",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "id",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": ""
+            }
+        ],
+        "primary_key": "id",
+        "foreign_keys": [
+            {
+                "column": "answer_id",
+                "references": "answer(answer_id)"
+            },
+            {
+                "column": "question_id",
+                "references": "question(question_id)"
+            },
+            {
+                "column": "workflow_id",
+                "references": "workflow(workflow_id)"
+            },
+            {
+                "column": "incident_number",
+                "references": "temp_incident(incident_number)"
+            }
+        ]
+    },
+    {
+        "table_name": "temp_incident",
+        "columns": [
+            {
+                "name": "incident_number",
+                "type": "VARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "text_mme",
+                "type": "TEXT(2147483647) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "updated_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            }
+        ],
+        "primary_key": "incident_number",
+        "foreign_keys": []
+    },
+    {
+        "table_name": "workflow",
+        "columns": [
+            {
+                "name": "workflow_id",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "workflow_name",
+                "type": "VARCHAR(255) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "incident_type",
+                "type": "VARCHAR(255) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "created_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "updated_at",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            }
+        ],
+        "primary_key": "workflow_id",
+        "foreign_keys": []
+    }
+]

@@ -1,0 +1,24 @@
+{"prompt": "Convert this into MSSQL: Show all answers that were rendered but not submitted.", "completion": "SELECT * FROM answer WHERE rendered_at IS NOT NULL AND submitted_at IS NULL;"}
+{"prompt": "Convert this into MSSQL: Retrieve all workflows created after July 2023.", "completion": "SELECT * FROM workflow WHERE created_at >= '2023-07-01';"}
+{"prompt": "Convert this into MSSQL: Get all incidents where the description field is not empty.", "completion": "SELECT * FROM incident WHERE text_mme IS NOT NULL;"}
+{"prompt": "Convert this into MSSQL: Show all questions that were updated before they were created.", "completion": "SELECT * FROM question WHERE updated_at < created_at;"}
+{"prompt": "Convert this into MSSQL: List all responses that have an answer associated with them.", "completion": "SELECT * FROM response WHERE answer_id IS NOT NULL;"}
+{"prompt": "Convert this into MSSQL: Retrieve all options that lead to another question.", "completion": "SELECT * FROM option WHERE next_question_id IS NOT NULL;"}
+{"prompt": "Convert this into MSSQL: Show all workflows where the name contains 'Critical'.", "completion": "SELECT * FROM workflow WHERE workflow_name LIKE '%Critical%';"}
+{"prompt": "Convert this into MSSQL: Get all responses sorted by the most recent creation date.", "completion": "SELECT * FROM response ORDER BY created_at DESC;"}
+{"prompt": "Convert this into MSSQL: List all incidents created in the year 2022.", "completion": "SELECT * FROM incident WHERE YEAR(created_at) = 2022;"}
+{"prompt": "Convert this into MSSQL: Retrieve all questions where the question type is 'Text Input'.", "completion": "SELECT * FROM question WHERE question_type = 'Text Input';"}
+{"prompt": "Convert this into MSSQL: Show all workflows that were updated in the last 30 days.", "completion": "SELECT * FROM workflow WHERE updated_at >= DATEADD(day, -30, GETDATE());"}
+{"prompt": "Convert this into MSSQL: Get all responses with workflow ID 8 and incident number 'INC12345'.", "completion": "SELECT * FROM response WHERE workflow_id = 8 AND incident_number = 'INC12345';"}
+{"prompt": "Convert this into MSSQL: Retrieve all questions where is_required is false.", "completion": "SELECT * FROM question WHERE is_required = 0;"}
+{"prompt": "Convert this into MSSQL: Show all responses where workflow ID is missing.", "completion": "SELECT * FROM response WHERE workflow_id IS NULL;"}
+{"prompt": "Convert this into MSSQL: Get the top 3 workflows with the most recent updates.", "completion": "SELECT TOP 3 * FROM workflow ORDER BY updated_at DESC;"}
+{"prompt": "Convert this into MSSQL: List all incidents where the text_mme contains 'Server Down'.", "completion": "SELECT * FROM incident WHERE text_mme LIKE '%Server Down%';"}
+{"prompt": "Convert this into MSSQL: Retrieve all options where is_completed is false.", "completion": "SELECT * FROM option WHERE is_completed = 0;"}
+{"prompt": "Convert this into MSSQL: Show all questions along with their workflows.", "completion": "SELECT question.question_text, workflow.workflow_name FROM question INNER JOIN workflow ON question.workflow_id = workflow.workflow_id;"}
+{"prompt": "Convert this into MSSQL: List all responses along with their associated incidents.", "completion": "SELECT response.id, response.incident_number, incident.text_mme FROM response INNER JOIN incident ON response.incident_number = incident.incident_number;"}
+{"prompt": "Convert this into MSSQL: Retrieve all answers and their corresponding questions.", "completion": "SELECT answer.answer_text, question.question_text FROM answer INNER JOIN question ON answer.question_id = question.question_id;"}
+{"prompt": "Convert this into MSSQL: Get all workflows along with the number of linked responses.", "completion": "SELECT workflow.workflow_name, COUNT(response.id) AS response_count FROM workflow LEFT JOIN response ON workflow.workflow_id = response.workflow_id GROUP BY workflow.workflow_name;"}
+{"prompt": "Convert this into MSSQL: Show all options and their next questions if applicable.", "completion": "SELECT option.option_text, question.question_text FROM option LEFT JOIN question ON option.next_question_id = question.question_id;"}
+{"prompt": "Convert this into MSSQL: Retrieve all incidents and the count of responses linked to each.", "completion": "SELECT incident.incident_number, COUNT(response.id) AS response_count FROM incident LEFT JOIN response ON incident.incident_number = response.incident_number GROUP BY incident.incident_number;"}
+{"prompt": "Convert this into MSSQL: List all workflows along with the count of related questions.", "completion": "SELECT workflow.workflow_name, COUNT(question.question_id) AS total_questions FROM workflow LEFT JOIN question ON workflow.workflow_id = question.workflow_id GROUP BY workflow.workflow_name;"}
