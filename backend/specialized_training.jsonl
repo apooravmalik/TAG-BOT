@@ -1,0 +1,10 @@
+{"prompt": "Convert this into MSSQL: Show all workflows that have been created but never updated.", "completion": "SELECT * FROM workflow WHERE updated_at IS NULL;"}
+{"prompt": "Convert this into MSSQL: List all responses that were created in the last 90 days.", "completion": "SELECT * FROM response WHERE created_at >= DATEADD(day, -90, GETDATE());"}
+{"prompt": "Convert this into MSSQL: Retrieve all incidents where the text_mme column contains 'urgent'.", "completion": "SELECT * FROM incident WHERE text_mme LIKE '%urgent%';"}
+{"prompt": "Convert this into MSSQL: Find users who have not logged in for 30 days.", "completion": "SELECT * FROM user WHERE last_login_at < DATEADD(day, -30, GETDATE());"}
+{"prompt": "Convert this into MSSQL: Count the number of workflows created by each user.", "completion": "SELECT user_id, COUNT(*) as workflow_count FROM workflow GROUP BY user_id;"}
+{"prompt": "Convert this into MSSQL: Get all responses with missing workflow IDs.", "completion": "SELECT * FROM response WHERE workflow_id IS NULL;"}
+{"prompt": "Convert this into MSSQL: Find all incidents created this year.", "completion": "SELECT * FROM incident WHERE created_at >= DATEADD(year, DATEDIFF(year, 0, GETDATE()), 0);"}
+{"prompt": "Convert this into MSSQL: List workflows updated in the last week.", "completion": "SELECT * FROM workflow WHERE updated_at >= DATEADD(day, -7, GETDATE());"}
+{"prompt": "Convert this into MSSQL: Count responses by status.", "completion": "SELECT status, COUNT(*) as count FROM response GROUP BY status;"}
+{"prompt": "Convert this into MSSQL: Find incidents with high priority and containing 'error' in description.", "completion": "SELECT * FROM incident WHERE priority = 'high' AND description LIKE '%error%';"}

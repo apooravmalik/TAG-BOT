@@ -2,20 +2,74 @@ from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 import requests
 from sqlalchemy.orm import Session
-from config.database import get_db  # Import session dependency
-from sqlalchemy import text, TextClause, select
+from config.database import get_db
+from sqlalchemy import text
+import re
 
 # FastAPI Instance
 app = FastAPI()
 
 # Ollama API Configuration
 OLLAMA_URL = "http://localhost:11500/api/generate"
-MODEL_NAME = "smollm2"  # Ensure this model is available in Ollama
+MODEL_NAME = "sql_gen"  # Updated model name to use your fine-tuned model
 
 # Request Model
 class QueryRequest(BaseModel):
     query: str  # Natural language query from user
     table_name: str  # Table name to fetch schema dynamically
+
+# SQL Standardization Function
+def standardize_sql(sql_query):
+    # Dictionary of replacements for table names (case-insensitive)
+    table_replacements = {
+        r'\[response\]': 'response',
+        r'\[workflow\]': 'workflow',
+        r'\[incident\]': 'incident',
+        r'\[user\]': 'user',
+        r'response': 'response',
+        r'workflow': 'workflow',
+        r'incident': 'incident',
+        r'user': 'user',
+    }
+    
+    # Dictionary of replacements for column names
+    column_replacements = {
+        r'LastUpdateDate': 'updated_at',
+        r'Created': 'created_at',
+        r'UpdatedAt': 'updated_at',
+        r'CreatedAt': 'created_at',
+        r'last_login': 'last_login_at',
+        r'last_updated': 'updated_at',
+        r'date_created_at': 'created_at',
+        r'textMME': 'text_mme',
+    }
+    
+    # Dictionary of replacements for MSSQL specific syntax
+    syntax_replacements = {
+        r'CURRENT_DATE - INTERVAL \'(\d+)\' DAY': r'DATEADD(day, -\1, GETDATE())',
+        r'DATE\([\w_]+\) > CURRENT_DATE - INTERVAL': r'created_at >= DATEADD(day, -',
+        r'NOW\(\)': 'GETDATE()',
+        r'CURRENT_DATE': 'CAST(GETDATE() AS DATE)',
+    }
+    
+    # Apply table name replacements (case-insensitive)
+    for pattern, replacement in table_replacements.items():
+        sql_query = re.sub(r'FROM\s+' + pattern, f'FROM {replacement}', sql_query, flags=re.IGNORECASE)
+        sql_query = re.sub(r'JOIN\s+' + pattern, f'JOIN {replacement}', sql_query, flags=re.IGNORECASE)
+    
+    # Apply column name replacements
+    for pattern, replacement in column_replacements.items():
+        sql_query = re.sub(pattern, replacement, sql_query, flags=re.IGNORECASE)
+    
+    # Apply syntax replacements
+    for pattern, replacement in syntax_replacements.items():
+        sql_query = re.sub(pattern, replacement, sql_query)
+    
+    # Ensure each query ends with a semicolon
+    if not sql_query.strip().endswith(';'):
+        sql_query = sql_query.strip() + ';'
+    
+    return sql_query
 
 # Function to fetch table schema dynamically
 def get_table_schema(db: Session, table_name: str) -> dict:
@@ -24,7 +78,7 @@ def get_table_schema(db: Session, table_name: str) -> dict:
         query = text("SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = :table_name")
 
         # Execute query with parameters safely
-        result = db.execute(query, {"table_name": table_name}).all()  # Use .all() to fetch all results
+        result = db.execute(query, {"table_name": table_name}).all()
 
         if not result:
             raise HTTPException(status_code=404, detail=f"Table '{table_name}' not found in database")
@@ -44,30 +98,33 @@ def get_table_schema(db: Session, table_name: str) -> dict:
                     
 # Function to call Ollama API to generate SQL
 def generate_sql(natural_query: str, schema: dict) -> str:
-    # Import re at the top level of the function
-    import re
+    # Create a schema-formatted prompt
+    table_name = schema["table_name"]
+    columns_info = "\n".join([f"- {col['name']} ({col['type']}, {'NULL' if col['nullable'] == 'YES' else 'NOT NULL'})" 
+                            for col in schema["columns"]])
+    
+    schema_prompt = f"""
+    Table: {table_name}
+    Columns:
+    {columns_info}
+    """
     
     payload = {
         "model": MODEL_NAME,
-        "prompt": f"""Convert the following query into a valid Microsoft SQL Server query: {natural_query}.
-        
-        For queries asking to 'show all' or 'list all', simply use 'SELECT * FROM [table_name]' without any WHERE conditions.
-        
-        Use the following table schema: {schema}.
-        
-        CRITICAL RULES for SQL Server syntax:
-        1. DO NOT use backticks (`) - use square brackets ([]) for table and column names if needed
-        2. DO NOT use NOW() - use GETDATE() instead
-        3. DO NOT use INTERVAL - use DATEADD() function instead (e.g., DATEADD(day, -1, GETDATE()))
-        4. DO NOT use LIMIT - use TOP instead (e.g., SELECT TOP 10)
-        5. DO NOT use EXTRACT(YEAR FROM date) - use YEAR(date) instead
-        6. DO NOT use EXTRACT(MONTH FROM date) - use MONTH(date) instead
-        7. DO NOT use EXTRACT(DAY FROM date) - use DAY(date) instead
-        8. Format dates as 'YYYY-MM-DD' with single quotes
-        
-        Return ONLY the SQL query with no markdown, no comments, and no explanations.""",
-        "stream": False
+        "prompt": f"""You are a SQL code generator. Output ONLY valid SQL code with no explanations.
+
+Request: Convert this into MSSQL: {natural_query}
+
+Table Schema:
+{schema_prompt}
+
+SQL:""",
+        "stream": False,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "repetition_penalty": 1.2
     }
+    
     try:
         response = requests.post(OLLAMA_URL, json=payload)
         response.raise_for_status()
@@ -79,26 +136,8 @@ def generate_sql(natural_query: str, schema: dict) -> str:
             if sql_match:
                 raw_response = sql_match.group(1).strip()
         
-        # Replace common SQL syntax issues with SQL Server equivalents
-        replacements = [
-            (r"NOW\(\)", "GETDATE()"),
-            (r"LIMIT\s+(\d+)", r"TOP \1"),
-            (r"INTERVAL\s+(\d+)\s+DAY", r"day, -\1"),
-            (r"`([^`]+)`", r"[\1]"),
-            (r"\[\s*(\d{4}-\d{2}-\d{2}(?:\s\d{2}:\d{2}:\d{2})?)\s*\]", r"'\1'"),
-            # Handle EXTRACT function
-            (r"EXTRACT\s*\(\s*YEAR\s+FROM\s+([^)]+)\s*\)", r"YEAR(\1)"),
-            (r"EXTRACT\s*\(\s*MONTH\s+FROM\s+([^)]+)\s*\)", r"MONTH(\1)"),
-            (r"EXTRACT\s*\(\s*DAY\s+FROM\s+([^)]+)\s*\)", r"DAY(\1)"),
-        ]
-        
-        for pattern, replacement in replacements:
-            raw_response = re.sub(pattern, replacement, raw_response, flags=re.IGNORECASE)
-        
-        # Fix interval pattern if it still exists
-        if "INTERVAL" in raw_response.upper():
-            interval_pattern = r"GETDATE\(\)\s*-\s*INTERVAL\s+(\d+)\s+DAY"
-            raw_response = re.sub(interval_pattern, r"DATEADD(day, -\1, GETDATE())", raw_response, flags=re.IGNORECASE)
+        # Apply additional standardization
+        raw_response = standardize_sql(raw_response)
         
         print(f"Final SQL: {raw_response}")
         return raw_response
@@ -106,26 +145,11 @@ def generate_sql(natural_query: str, schema: dict) -> str:
     except requests.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Ollama API Error: {str(e)}")
 
-# Function to execute SQL query safely
-def execute_sql_query(db: Session, sql_query: str):
-    try:
-        # Create a text object from the SQL string
-        sql = text(sql_query)
-        
-        # Execute the query safely
-        result = db.execute(sql)
-        return result.all()  # Use .all() for consistency
-    except Exception as e:
-        db.rollback()  # Rollback in case of failure
-        # Print the error to server logs
-        print(f"SQL Execution Error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"SQL Execution Error: {str(e)}")
-
-# Function to convert SQL result to natural language using SmolLM2
+# Function to convert SQL result to natural language
 def convert_to_natural_language(sql_result: str) -> str:
     payload = {
         "model": MODEL_NAME,
-        "prompt": f"Convert the following SQL output into a natural language response: {sql_result}",
+        "prompt": f"Convert the following SQL output into a natural language response that a non-technical person would understand: {sql_result}",
         "stream": False
     }
     try:
@@ -140,7 +164,6 @@ def convert_to_natural_language(sql_result: str) -> str:
 async def fetch_schema(table_name: str, db: Session = Depends(get_db)):
     return get_table_schema(db, table_name)
 
-# FastAPI Endpoint to handle user queries
 # FastAPI Endpoint to handle user queries
 @app.post("/query")
 async def process_query(request: QueryRequest, db: Session = Depends(get_db)):
@@ -163,7 +186,7 @@ async def process_query(request: QueryRequest, db: Session = Depends(get_db)):
             
             # Execute the query safely
             result = db.execute(sql)
-            sql_result = result.all()  # Use .all() for consistency
+            sql_result = result.all()
             
             if not sql_result:
                 return {"query": request.query, "sql": sql_query, "response": "No results found for your query."}

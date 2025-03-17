@@ -1,0 +1,2 @@
+FROM smollm2:latest
+ADAPTER ./sql_generation_lora_adapter
