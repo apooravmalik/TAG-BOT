@@ -10,8 +10,8 @@ import re
 app = FastAPI()
 
 # Ollama API Configuration
-OLLAMA_URL = "http://localhost:11500/api/generate"
-MODEL_NAME = "sql_gen"  # Updated model name to use your fine-tuned model
+OLLAMA_URL = "http://127.0.0.1:11500/api/generate"
+MODEL_NAME = "sql-smol"  # Updated model name to use your fine-tuned model
 
 # Request Model
 class QueryRequest(BaseModel):
@@ -34,14 +34,14 @@ def standardize_sql(sql_query):
     
     # Dictionary of replacements for column names
     column_replacements = {
-        r'LastUpdateDate': 'updated_at',
-        r'Created': 'created_at',
-        r'UpdatedAt': 'updated_at',
-        r'CreatedAt': 'created_at',
-        r'last_login': 'last_login_at',
-        r'last_updated': 'updated_at',
-        r'date_created_at': 'created_at',
-        r'textMME': 'text_mme',
+    r'\bLastUpdateDate\b': 'updated_at',
+    r'\bCreated\b': 'created_at',
+    r'\bUpdatedAt\b': 'updated_at',
+    r'\bCreatedAt\b': 'created_at',
+    r'\blast_login\b': 'last_login_at',
+    r'\blast_updated\b': 'updated_at',
+    r'\bdate_created_at\b': 'created_at',
+    r'\btextMME\b': 'text_mme',
     }
     
     # Dictionary of replacements for MSSQL specific syntax
@@ -100,9 +100,12 @@ def get_table_schema(db: Session, table_name: str) -> dict:
 def generate_sql(natural_query: str, schema: dict) -> str:
     # Create a schema-formatted prompt
     table_name = schema["table_name"]
-    columns_info = "\n".join([f"- {col['name']} ({col['type']}, {'NULL' if col['nullable'] == 'YES' else 'NOT NULL'})" 
-                            for col in schema["columns"]])
-    
+    # Prepare schema in the prompt
+    columns_info = "\n".join([
+        f"- {col['name']} ({col['type']}, {'NULL' if col['nullable'] == 'YES' else 'NOT NULL'})"
+        for col in schema["columns"]
+    ])
+
     schema_prompt = f"""
     Table: {table_name}
     Columns:
@@ -149,7 +152,11 @@ SQL:""",
 def convert_to_natural_language(sql_result: str) -> str:
     payload = {
         "model": MODEL_NAME,
-        "prompt": f"Convert the following SQL output into a natural language response that a non-technical person would understand: {sql_result}",
+        "prompt": f"""Return the following SQL results in JSON format without modifying the structure:
+        {sql_result}
+
+        Then, provide a concise, one-line explanation of the data in plain language.
+        """,
         "stream": False
     }
     try:
@@ -188,6 +195,8 @@ async def process_query(request: QueryRequest, db: Session = Depends(get_db)):
             result = db.execute(sql)
             sql_result = result.all()
             
+            print(type(sql_result), sql_result)
+            
             if not sql_result:
                 return {"query": request.query, "sql": sql_query, "response": "No results found for your query."}
                 
@@ -195,9 +204,35 @@ async def process_query(request: QueryRequest, db: Session = Depends(get_db)):
             formatted_result = [dict(row._mapping) for row in sql_result]
             print(f"Query executed successfully with {len(formatted_result)} results")
             
-            # Step 4: Convert SQL result to natural language
-            final_response = convert_to_natural_language(str(formatted_result))
-            return {"query": request.query, "sql": sql_query, "response": final_response}
+            # Step 4: Convert SQL result to natural language            
+            # natural_result = convert_to_natural_language(str(formatted_result))
+            
+            # Format the result as JSON first
+            result_data = formatted_result
+
+            # Generate explanation separately (other than convert_to_natural_language)
+            explanation_payload = {
+                "model": MODEL_NAME,
+                "prompt": f"Summarize the following SQL results in one line: {str(formatted_result)}",
+                "stream": False
+            }
+
+            # Get explanation separately
+            try:
+                explanation_response = requests.post(OLLAMA_URL, json=explanation_payload)
+                explanation_response.raise_for_status()
+                explanation = explanation_response.json().get("response", "").strip()
+            except requests.RequestException as e:
+                explanation = "Unable to generate a summary."
+
+            # Return both results and explanation
+            return {
+                "query": request.query,
+                "sql": sql_query,
+                "data": result_data,
+                "explanation": explanation
+            }
+
             
         except Exception as e:
             db.rollback()
