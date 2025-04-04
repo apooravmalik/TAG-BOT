@@ -1,12 +1,18 @@
+import os
 import json
 from sqlalchemy import inspect, text
 from database import get_db, engine, DB_SCHEMA
 import logging
 from contextlib import contextmanager
 
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Get absolute path to config directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Directory of schema_extractor.py
+OUTPUT_FILE = os.path.join(BASE_DIR, "schema.json")  # Absolute path to schema.json
 
 @contextmanager
 def get_db_session():
@@ -45,7 +51,6 @@ def get_table_schema():
             # Get columns
             columns = inspector.get_columns(table_name, schema=DB_SCHEMA)
             for column in columns:
-                # Get column details
                 column_info = {
                     "name": column["name"],
                     "type": str(column["type"]),
@@ -83,7 +88,18 @@ def get_column_description(table_name, column_name):
     """
     try:
         with get_db_session() as db:
-            query = text("SELECT value FROM sys.extended_properties WHERE major_id = OBJECT_ID(:table_name) AND minor_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID(:table_name) AND name = :column_name) AND name = 'MS_Description'")
+            query = text("""
+                SELECT value 
+                FROM sys.extended_properties 
+                WHERE major_id = OBJECT_ID(:table_name) 
+                AND minor_id = (
+                    SELECT column_id 
+                    FROM sys.columns 
+                    WHERE object_id = OBJECT_ID(:table_name) 
+                    AND name = :column_name
+                ) 
+                AND name = 'MS_Description'
+            """)
             
             result = db.execute(query, {"table_name": f"{DB_SCHEMA}.{table_name}", "column_name": column_name})
             row = result.fetchone()
@@ -95,14 +111,14 @@ def get_column_description(table_name, column_name):
         logger.error(f"Error getting column description: {e}")
         return ""
 
-def save_schema_to_json(output_file="schema.json"):
+def save_schema_to_json(output_file=OUTPUT_FILE):
     """
     Save the schema data to a JSON file
     """
     schema_data = get_table_schema()
     
     try:
-        with open(output_file, 'w') as f:
+        with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(schema_data, f, indent=4)
         logger.info(f"Schema data saved to {output_file}")
         return True

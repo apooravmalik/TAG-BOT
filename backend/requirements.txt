@@ -5,3 +5,7 @@ fastapi
 uvicorn
 pydantic
 requests
+faiss-cpu
+sentence-transformers
+sqlalchemy
+python-dotenv
