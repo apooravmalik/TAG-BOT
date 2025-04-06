@@ -1,7 +1,7 @@
 import os
 import json
 from sqlalchemy import inspect, text
-from database import get_db, engine, DB_SCHEMA
+from config.database import get_db, engine, DB_SCHEMA
 import logging
 from contextlib import contextmanager
 
@@ -125,6 +125,37 @@ def save_schema_to_json(output_file=OUTPUT_FILE):
     except Exception as e:
         logger.error(f"Error saving schema to JSON: {e}")
         return False
+    
+def get_relevant_schema_from_retriever(query: str, top_k: int = 2) -> list:
+    """
+    Get relevant schema (tables + important columns) using retriever logic.
+    This version avoids overloading the prompt with full schema.
+    """
+    from .retriever import retrieve_table, highlight_relevant_columns
+
+    matched_tables = retrieve_table(query, top_k=top_k)
+
+    if not matched_tables:
+        return []
+
+    partial_schema = []
+
+    for table in matched_tables:
+        table_name = table["table_name"]
+        relevant_columns = highlight_relevant_columns(query, table)
+
+        if not relevant_columns:
+            continue  # skip if no relevant columns found
+
+        # Filter columns
+        filtered_table = {
+            **table,
+            "columns": [col for col in table["columns"] if col["name"] in relevant_columns]
+        }
+        partial_schema.append(filtered_table)
+
+    return partial_schema
+
 
 if __name__ == "__main__":
     save_schema_to_json()

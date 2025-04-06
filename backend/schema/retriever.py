@@ -15,7 +15,7 @@ with open(SCHEMA_FILE, "r") as f:
 faiss_index = faiss.read_index(FAISS_INDEX_FILE)
 
 # Step 2: Retrieve the most relevant table based on a query
-def retrieve_table(query, top_k=1):
+def retrieve_table(query, top_k=2):
     query_embedding = model.encode([query], convert_to_numpy=True)
     distances, indices = faiss_index.search(query_embedding, top_k)
 
@@ -55,14 +55,27 @@ def highlight_relevant_columns(query, table_schema, threshold=0.1):
 if __name__ == "__main__":
     query = input("Enter your search query: ")
     
-    # Step 2: Retrieve table
     matched_tables = retrieve_table(query)
+    
     if not matched_tables:
         print("No relevant table found.")
     else:
-        selected_table = matched_tables[0]
-        print("Relevant Table:", selected_table["table_name"])
-        
-        # Step 3: Highlight columns
-        highlighted = highlight_relevant_columns(query, selected_table)
-        print("Highlighted Columns:", highlighted)
+        combined_tables = []
+        all_highlighted_columns = {}
+
+        for table in matched_tables:
+            table_name = table["table_name"]
+            combined_tables.append(table_name)
+
+            highlighted = highlight_relevant_columns(query, table)
+            if highlighted:
+                all_highlighted_columns[table_name] = highlighted
+
+        # Deduplicate table names
+        combined_tables = list(set(combined_tables))
+
+        # Output
+        print("Relevant Tables:", combined_tables)
+        print("Highlighted Columns:")
+        for table_name, columns in all_highlighted_columns.items():
+            print(f"  {table_name}: {columns}")
