@@ -1,7 +1,7 @@
 import os
 import json
 from sqlalchemy import inspect, text
-from config.database import get_db, engine, DB_SCHEMA
+from database import get_db, engine, DB_SCHEMA
 import logging
 from contextlib import contextmanager
 
@@ -131,7 +131,7 @@ def get_relevant_schema_from_retriever(query: str, top_k: int = 2) -> list:
     Get relevant schema (tables + important columns) using retriever logic.
     This version avoids overloading the prompt with full schema.
     """
-    from .retriever import retrieve_table, highlight_relevant_columns
+    from ..schema.retriever import retrieve_table, highlight_relevant_columns
 
     matched_tables = retrieve_table(query, top_k=top_k)
 
