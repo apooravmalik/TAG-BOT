@@ -38,7 +38,15 @@ def get_table_schema():
         inspector = inspect(engine)
         
         # Get all tables in the specified schema
-        tables = inspector.get_table_names(schema=DB_SCHEMA)
+        # List of specific tables you want
+        target_tables = {"IncidentLog_TBL", "Street_TBL", "Unit_TBL", "Building_TBL", "IncidentCategory_TBL", "IncidentStatus_TBL"}
+
+        # Get all tables in the specified schema
+        all_tables = inspector.get_table_names(schema=DB_SCHEMA)
+
+        # Filter only the tables you care about
+        tables = [t for t in all_tables if t in target_tables]
+
         
         for table_name in tables:
             table_info = {

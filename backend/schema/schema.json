@@ -1,331 +1,1610 @@
 [
     {
-        "table_name": "answer",
+        "table_name": "Building_TBL",
         "columns": [
             {
-                "name": "answer_id",
+                "name": "Building_PRK",
                 "type": "INTEGER",
                 "nullable": "NO",
-                "description": ""
+                "description": "",
+                "intent": "Unique identifier for the building"
             },
             {
-                "name": "question_id",
+                "name": "bldBuildingName_TXT",
+                "type": "NVARCHAR(100) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for building name"
+            },
+            {
+                "name": "bldVunerableBuilding_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating vulnerable building"
+            },
+            {
+                "name": "bldAlarmCode_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for alarm code"
+            },
+            {
+                "name": "bldAlarmInstructions_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for alarm instructions"
+            },
+            {
+                "name": "bldSiteCode_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for site code"
+            },
+            {
+                "name": "bldAlarmContractNumber_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for alarm contract number"
+            },
+            {
+                "name": "bldAlarmCompany_FRK",
                 "type": "INTEGER",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Foreign key referencing Company"
             },
             {
-                "name": "answer_text",
-                "type": "VARCHAR COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "name": "bldAlarmPanelLocation_MEM",
+                "type": "NTEXT",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Text field for alarm panel location"
             },
             {
-                "name": "rendered_at",
+                "name": "bldAlarmAccessToPremises_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for alarm access to premises"
+            },
+            {
+                "name": "bldAddress1_TXT",
+                "type": "NVARCHAR(200) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for address line 1"
+            },
+            {
+                "name": "bldAddress2_TXT",
+                "type": "NVARCHAR(200) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for address line 2"
+            },
+            {
+                "name": "bldPostCode_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for postal code"
+            },
+            {
+                "name": "bldCounty_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for county"
+            },
+            {
+                "name": "bldTown_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for town"
+            },
+            {
+                "name": "bldTelNum_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for telephone number"
+            },
+            {
+                "name": "bldClientCompany_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing client Company"
+            },
+            {
+                "name": "bldClientStartDate_DTM",
                 "type": "DATETIME",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Date and time of client relationship start"
             },
             {
-                "name": "submitted_at",
+                "name": "bldClientEndDate_DTM",
                 "type": "DATETIME",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Date and time of client relationship end"
             },
             {
-                "name": "created_at",
+                "name": "bldComments_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for general comments"
+            },
+            {
+                "name": "bldAlarmIDComments_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for alarm ID comments"
+            },
+            {
+                "name": "bldEPromNum_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for EPROM number"
+            },
+            {
+                "name": "bldEPromZone01_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating EPROM zone 01 status"
+            },
+            {
+                "name": "bldEPromZone02_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating EPROM zone 02 status"
+            },
+            {
+                "name": "bldEPromZone03_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating EPROM zone 03 status"
+            },
+            {
+                "name": "bldEPromZone04_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating EPROM zone 04 status"
+            },
+            {
+                "name": "bldEPromZone05_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating EPROM zone 05 status"
+            },
+            {
+                "name": "bldEPromCustomerRef_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for EPROM customer reference"
+            },
+            {
+                "name": "bldEPromAddedDate_DTM",
                 "type": "DATETIME",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Date and time when EPROM was added"
+            },
+            {
+                "name": "bldEPromActiveDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when EPROM became active"
+            },
+            {
+                "name": "bldEPromDeletedDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when EPROM was deleted"
+            },
+            {
+                "name": "bldBTRedCare1Num_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for BT RedCare 1 number"
+            },
+            {
+                "name": "bldBTRedCare1Zone01_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 1 zone 01 status"
+            },
+            {
+                "name": "bldBTRedCare1Zone02_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 1 zone 02 status"
+            },
+            {
+                "name": "bldBTRedCare1Zone03_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 1 zone 03 status"
+            },
+            {
+                "name": "bldBTRedCare1Zone04_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 1 zone 04 status"
+            },
+            {
+                "name": "bldBTRedCare1Zone14_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 1 zone 14 status"
+            },
+            {
+                "name": "bldBTRedCare1Zone1023_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 1 zone 1023 status"
+            },
+            {
+                "name": "bldBTRedCare1CustomerRef_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for BT RedCare 1 customer reference"
+            },
+            {
+                "name": "bldBTRedCare1AddedDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when BT RedCare 1 was added"
+            },
+            {
+                "name": "bldBTRedCare1ActiveDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when BT RedCare 1 became active"
+            },
+            {
+                "name": "bldBTRedCare1DeletedDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when BT RedCare 1 was deleted"
+            },
+            {
+                "name": "bldBTRedCare2Num_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for BT RedCare 2 number"
+            },
+            {
+                "name": "bldBTRedCare2Zone01_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 2 zone 01 status"
+            },
+            {
+                "name": "bldBTRedCare2Zone02_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 2 zone 02 status"
+            },
+            {
+                "name": "bldBTRedCare2Zone03_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 2 zone 03 status"
+            },
+            {
+                "name": "bldBTRedCare2Zone04_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 2 zone 04 status"
+            },
+            {
+                "name": "bldBTRedCare2Zone14_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 2 zone 14 status"
+            },
+            {
+                "name": "bldBTRedCare2Zone1023_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating BT RedCare 2 zone 1023 status"
+            },
+            {
+                "name": "bldBTRedCare2CustomerRef_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for BT RedCare 2 customer reference"
+            },
+            {
+                "name": "bldBTRedCare2AddedDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when BT RedCare 2 was added"
+            },
+            {
+                "name": "bldBTRedCare2ActiveDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when BT RedCare 2 became active"
+            },
+            {
+                "name": "bldBTRedCare2DeletedDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when BT RedCare 2 was deleted"
+            },
+            {
+                "name": "bldCCTVConnectionType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing CCTV connection type"
+            },
+            {
+                "name": "bldCCTVComments_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for CCTV comments"
+            },
+            {
+                "name": "bldCCTVOperationalDate_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when CCTV became operational"
+            },
+            {
+                "name": "bldDSMon_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Monday day shift schedule"
+            },
+            {
+                "name": "bldDSTue_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Tuesday day shift schedule"
+            },
+            {
+                "name": "bldDSWed_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Wednesday day shift schedule"
+            },
+            {
+                "name": "bldDSThu_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Thursday day shift schedule"
+            },
+            {
+                "name": "bldDSFri_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Friday day shift schedule"
+            },
+            {
+                "name": "bldDSSat_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Saturday day shift schedule"
+            },
+            {
+                "name": "bldDSSun_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Sunday day shift schedule"
+            },
+            {
+                "name": "bldDSHol_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for holiday day shift schedule"
+            },
+            {
+                "name": "bldBSMon_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Monday back shift schedule"
+            },
+            {
+                "name": "bldBSTue_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Tuesday back shift schedule"
+            },
+            {
+                "name": "bldBSWed_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Wednesday back shift schedule"
+            },
+            {
+                "name": "bldBSThu_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Thursday back shift schedule"
+            },
+            {
+                "name": "bldBSFri_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Friday back shift schedule"
+            },
+            {
+                "name": "bldBSSat_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Saturday back shift schedule"
+            },
+            {
+                "name": "bldBSSun_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Sunday back shift schedule"
+            },
+            {
+                "name": "bldBSHol_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for holiday back shift schedule"
+            },
+            {
+                "name": "bldNSMon_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Monday night shift schedule"
+            },
+            {
+                "name": "bldNSTue_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Tuesday night shift schedule"
+            },
+            {
+                "name": "bldNSWed_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Wednesday night shift schedule"
+            },
+            {
+                "name": "bldNSThu_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Thursday night shift schedule"
+            },
+            {
+                "name": "bldNSFri_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Friday night shift schedule"
+            },
+            {
+                "name": "bldNSSat_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Saturday night shift schedule"
+            },
+            {
+                "name": "bldNSSun_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for Sunday night shift schedule"
+            },
+            {
+                "name": "bldNSHol_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for holiday night shift schedule"
+            },
+            {
+                "name": "RowVersion_RVS",
+                "type": "TIMESTAMP",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Timestamp for row version control"
+            },
+            {
+                "name": "bldDispatchManager_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing dispatch manager Person"
+            },
+            {
+                "name": "bldIcon_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing map icon"
+            },
+            {
+                "name": "bldIconMap_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing map DX"
+            },
+            {
+                "name": "bldIconZoomLevel_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for map icon zoom level"
+            },
+            {
+                "name": "bldIconTransparency_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for map icon transparency"
+            },
+            {
+                "name": "bldLatitude_DEC",
+                "type": "DECIMAL(10, 7)",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Decimal value for building latitude"
+            },
+            {
+                "name": "bldLongitude_DEC",
+                "type": "DECIMAL(10, 7)",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Decimal value for building longitude"
+            },
+            {
+                "name": "bldBuildingType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing building type"
+            },
+            {
+                "name": "bldSuppress_BLN",
+                "type": "BIT",
+                "nullable": "NO",
+                "description": "",
+                "intent": "Boolean flag indicating suppression status"
             }
         ],
-        "primary_key": "answer_id",
+        "primary_key": "Building_PRK",
         "foreign_keys": [
             {
-                "column": "question_id",
-                "references": "question(question_id)"
+                "column": "bldBuildingType_FRK",
+                "references": "BuildingType_TBL(BuildingType_PRK)"
+            },
+            {
+                "column": "bldAlarmCompany_FRK",
+                "references": "Company_TBL(Company_PRK)"
+            },
+            {
+                "column": "bldClientCompany_FRK",
+                "references": "Company_TBL(Company_PRK)"
+            },
+            {
+                "column": "bldIconMap_FRK",
+                "references": "MapDX_TBL(MapDx_PRK)"
+            },
+            {
+                "column": "bldIcon_FRK",
+                "references": "MapIcon_TBL(MapIcon_PRK)"
+            },
+            {
+                "column": "bldDispatchManager_FRK",
+                "references": "Person_TBL(Person_PRK)"
             }
         ]
     },
     {
-        "table_name": "incident",
+        "table_name": "IncidentCategory_TBL",
         "columns": [
             {
-                "name": "incident_number",
-                "type": "VARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "name": "IncidentCategory_PRK",
+                "type": "INTEGER",
                 "nullable": "NO",
-                "description": ""
+                "description": "",
+                "intent": "Unique identifier for incident category"
             },
             {
-                "name": "text_mme",
-                "type": "TEXT(2147483647) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "name": "incName_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Text field for incident category name"
             },
             {
-                "name": "created_at",
-                "type": "DATETIME",
+                "name": "incMapColour_LNG",
+                "type": "INTEGER",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Numeric value for map color"
             },
             {
-                "name": "updated_at",
-                "type": "DATETIME",
+                "name": "incSystem_FRK",
+                "type": "INTEGER",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Foreign key referencing system"
+            },
+            {
+                "name": "incActivityType_INT",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for activity type"
+            },
+            {
+                "name": "incDeactivated_BLN",
+                "type": "BIT",
+                "nullable": "NO",
+                "description": "",
+                "intent": "Boolean flag indicating deactivation status"
+            },
+            {
+                "name": "incPArtialReport_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating partial report status"
+            },
+            {
+                "name": "RowVersion_RVS",
+                "type": "TIMESTAMP",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Timestamp for row version control"
             }
         ],
-        "primary_key": "incident_number",
+        "primary_key": "IncidentCategory_PRK",
         "foreign_keys": []
     },
     {
-        "table_name": "option",
+        "table_name": "IncidentLog_TBL",
         "columns": [
             {
-                "name": "option_id",
+                "name": "IncidentLog_PRK",
                 "type": "INTEGER",
                 "nullable": "NO",
+                "description": "",
+                "intent": "Unique identifier for the incident log"
+            },
+            {
+                "name": "inlFileNo_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "question_id",
+                "name": "inlDateTime_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlCategory_FRK",
                 "type": "INTEGER",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "option_text",
-                "type": "VARCHAR(500) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "NO",
+                "name": "inlLocation_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "next_question_id",
+                "name": "inlIncidentDetails_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlActionTaken_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlClosedDateTime_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlStatus_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing Incident Status (3: Pending, 2: Closed, 1: Open)"
+            },
+            {
+                "name": "inlCallSource_FRK",
                 "type": "INTEGER",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "is_completed",
+                "name": "inlArrestsMade_BLN",
                 "type": "BIT",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "created_at",
+                "name": "inlArrestedCount_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlMap_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlMapYPos_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlMapXPos_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlResultDetails_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlResult_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSystem_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlMapX_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlCrimeNum_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSubCategory_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSendSMS_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSendEmail_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlZone_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlStreet_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing Street"
+            },
+            {
+                "name": "inlBuilding_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing Building"
+            },
+            {
+                "name": "inlTenancyReceipts_LNG",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "inlUnit_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing Unit"
+            },
+            {
+                "name": "inlActivityType_INT",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSendZoneEmail_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlReportedBy_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlRestricted_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlRestricted2_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSuppressed_BLN",
+                "type": "BIT",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "inlSuppressedReason_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlFines_TXT",
+                "type": "NVARCHAR(200) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlFinesMade_BLN",
+                "type": "BIT",
+                "nullable": "NO",
+                "description": ""
+            },
+            {
+                "name": "inlReportedDateTime_DTM",
                 "type": "DATETIME",
                 "nullable": "YES",
                 "description": ""
-            }
-        ],
-        "primary_key": "option_id",
-        "foreign_keys": [
-            {
-                "column": "next_question_id",
-                "references": "question(question_id)"
             },
             {
-                "column": "question_id",
-                "references": "question(question_id)"
-            }
-        ]
-    },
-    {
-        "table_name": "question",
-        "columns": [
-            {
-                "name": "question_id",
-                "type": "INTEGER",
-                "nullable": "NO",
-                "description": ""
-            },
-            {
-                "name": "workflow_id",
+                "name": "inlSupervisor_FRK",
                 "type": "INTEGER",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "question_text",
-                "type": "VARCHAR(1000) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "name": "RowVersion_RVS",
+                "type": "TIMESTAMP",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlCustodialSentence_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSubActivityType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlProAlarmType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing Pro Alarm Type"
+            },
+            {
+                "name": "inlAlarmProEvent_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmPriority_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for alarm priority"
+            },
+            {
+                "name": "inlAlarmAcknowledgedDateTime_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time of alarm acknowledgment"
+            },
+            {
+                "name": "inlAlarmMessage_TXT",
+                "type": "NVARCHAR(1024) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for alarm message"
+            },
+            {
+                "name": "inlAlarmColour_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmUserAcknowledged_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmAudioFileCacheID_TXT",
+                "type": "NVARCHAR(512) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmNonReactive_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating alarm reactivity (0: Reactive, 1: Non Reactive, 2: Not logged)"
+            },
+            {
+                "name": "inlProEventWorkstation_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSendStreetEmail_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlProEventQuickHitCount_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlProEventQuickHitLastEvent_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlLocationType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlPerpetratorsResponse_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlKeyHolderInfoAvailable_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlKeyHolderAttended_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmSilenced_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlNoiseDuringVisit_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSubSubCategory_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlLastDrinks_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlGeviscopeLink_LNG",
+                "type": "FLOAT",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmOnTest_BLN",
+                "type": "BIT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Boolean flag indicating if alarm is on test"
+            },
+            {
+                "name": "inlFootageDownloaded_BLN",
+                "type": "BIT",
                 "nullable": "NO",
                 "description": ""
             },
             {
-                "name": "question_type",
+                "name": "inlProAlertUser_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSendBuildingEmail_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSendBuildingSMS_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlMobotixEventIndex_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlLoneWorker_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexBlock_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexSourceNodeType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexSourceDeckAddress_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexSourceNodeAddress_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexSourceFlatNumber_TXT",
+                "type": "NVARCHAR(4) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexDestNodeType_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexDestDeckAddress_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexDestNodeAddress_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexDestFlatNumber_TXT",
+                "type": "NVARCHAR(4) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlApexActiveActionType_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlProAlertAcceptedDateTime_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlCommendSourceDevice_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlCommendDestinationDevice_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlGuardTourHistory_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlStentofonCallerID_TXT",
                 "type": "NVARCHAR(20) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "NO",
-                "description": ""
-            },
-            {
-                "name": "is_required",
-                "type": "BIT",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "created_at",
-                "type": "DATETIME",
+                "name": "inlStentofonCalleeID_TXT",
+                "type": "NVARCHAR(20) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "updated_at",
-                "type": "DATETIME",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "next_question_id",
+                "name": "inlIcon_FRK",
                 "type": "INTEGER",
                 "nullable": "YES",
                 "description": ""
             },
             {
-                "name": "is_completed",
-                "type": "BIT",
+                "name": "inlIconMapDx_FRK",
+                "type": "INTEGER",
                 "nullable": "YES",
                 "description": ""
-            }
-        ],
-        "primary_key": "question_id",
-        "foreign_keys": [
-            {
-                "column": "workflow_id",
-                "references": "workflow(workflow_id)"
             },
             {
-                "column": "next_question_id",
-                "references": "question(question_id)"
+                "name": "inlIconZoomLevel_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlIconTransparency_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlColourPriority_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAlarmGroup_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlSourceDevice_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlLatitude_DEC",
+                "type": "DECIMAL(10, 7)",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Decimal value for incident latitude"
+            },
+            {
+                "name": "inlLongitude_DEC",
+                "type": "DECIMAL(10, 7)",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Decimal value for incident longitude"
+            },
+            {
+                "name": "inlAutoIsolateProEvent_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAutoIsolateDevice_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlQuickHitParent_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlAMAGAlarmID_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlColourPrioritySetTime_DTM",
+                "type": "DATETIME",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Date and time when color priority was set"
+            },
+            {
+                "name": "inlPrimaryAlert_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": ""
+            },
+            {
+                "name": "inlTitle_TXT",
+                "type": "NVARCHAR(75) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for incident title"
+            }
+        ],
+        "primary_key": "IncidentLog_PRK",
+        "foreign_keys": [
+            {
+                "column": "inlAlarmGroup_FRK",
+                "references": "AlarmGroup_TBL(AlarmGroup_PRK)"
+            },
+            {
+                "column": "inlColourPriority_FRK",
+                "references": "ColourPriority_TBL(ColourPriority_PRK)"
+            },
+            {
+                "column": "inlSourceDevice_FRK",
+                "references": "Device_TBL(Device_PRK)"
+            },
+            {
+                "column": "inlCallSource_FRK",
+                "references": "IncidentCallSource_TBL(IncidentCallSource_PRK)"
+            },
+            {
+                "column": "inlCategory_FRK",
+                "references": "IncidentCategory_TBL(IncidentCategory_PRK)"
+            },
+            {
+                "column": "inlResult_FRK",
+                "references": "IncidentResult_TBL(IncidentResult_PRK)"
+            },
+            {
+                "column": "inlStatus_FRK",
+                "references": "IncidentStatus_TBL(IncidentStatus_PRK)"
+            },
+            {
+                "column": "inlSubActivityType_FRK",
+                "references": "IncidentSubActivityType_TBL(IncidentSubActivityType_PRK)"
+            },
+            {
+                "column": "inlSubCategory_FRK",
+                "references": "IncidentSubCategory_TBL(IncidentSubCategory_PRK)"
+            },
+            {
+                "column": "inlSubSubCategory_FRK",
+                "references": "IncidentSubSubCategory_TBL(IncidentSubSubCategory_PRK)"
+            },
+            {
+                "column": "inlLastDrinks_FRK",
+                "references": "LastDrinks_TBL(LastDrinks_PRK)"
+            },
+            {
+                "column": "inlMap_FRK",
+                "references": "Map_TBL(Map_PRK)"
+            },
+            {
+                "column": "inlIconMapDx_FRK",
+                "references": "MapDX_TBL(MapDx_PRK)"
+            },
+            {
+                "column": "inlIcon_FRK",
+                "references": "MapIcon_TBL(MapIcon_PRK)"
+            },
+            {
+                "column": "inlMapX_FRK",
+                "references": "MapX_TBL(MapX_PRK)"
+            },
+            {
+                "column": "inlReportedBy_FRK",
+                "references": "Person_TBL(Person_PRK)"
+            },
+            {
+                "column": "inlLoneWorker_FRK",
+                "references": "Person_TBL(Person_PRK)"
+            },
+            {
+                "column": "inlProAlarmType_FRK",
+                "references": "ProAlarmType_TBL(ProAlarmType_PRK)"
+            },
+            {
+                "column": "inlAlarmProEvent_FRK",
+                "references": "ProEvent_TBL(ProEvent_PRK)"
+            },
+            {
+                "column": "inlStreet_FRK",
+                "references": "Street_TBL(Street_PRK)"
+            },
+            {
+                "column": "inlBuilding_FRK",
+                "references": "Building_TBL(Building_PRK)"
+            },
+            {
+                "column": "inlUnit_FRK",
+                "references": "Unit_TBL(Unit_PRK)"
             }
         ]
     },
     {
-        "table_name": "response",
+        "table_name": "IncidentStatus_TBL",
         "columns": [
             {
-                "name": "incident_number",
-                "type": "VARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "NO",
-                "description": ""
-            },
-            {
-                "name": "workflow_id",
-                "type": "INTEGER",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "question_id",
-                "type": "INTEGER",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "answer_id",
-                "type": "INTEGER",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "created_at",
-                "type": "DATETIME",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "id",
+                "name": "IncidentStatus_PRK",
                 "type": "INTEGER",
                 "nullable": "NO",
-                "description": ""
+                "description": "",
+                "intent": "Unique identifier for incident status"
+            },
+            {
+                "name": "insName_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for incident status name"
+            },
+            {
+                "name": "RowVersion_RVS",
+                "type": "TIMESTAMP",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Timestamp for row version control"
             }
         ],
-        "primary_key": "id",
-        "foreign_keys": [
-            {
-                "column": "answer_id",
-                "references": "answer(answer_id)"
-            },
-            {
-                "column": "question_id",
-                "references": "question(question_id)"
-            },
-            {
-                "column": "workflow_id",
-                "references": "workflow(workflow_id)"
-            },
-            {
-                "column": "incident_number",
-                "references": "temp_incident(incident_number)"
-            }
-        ]
-    },
-    {
-        "table_name": "temp_incident",
-        "columns": [
-            {
-                "name": "incident_number",
-                "type": "VARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "NO",
-                "description": ""
-            },
-            {
-                "name": "text_mme",
-                "type": "TEXT(2147483647) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "created_at",
-                "type": "DATETIME",
-                "nullable": "YES",
-                "description": ""
-            },
-            {
-                "name": "updated_at",
-                "type": "DATETIME",
-                "nullable": "YES",
-                "description": ""
-            }
-        ],
-        "primary_key": "incident_number",
+        "primary_key": "IncidentStatus_PRK",
         "foreign_keys": []
     },
     {
-        "table_name": "workflow",
+        "table_name": "Street_TBL",
         "columns": [
             {
-                "name": "workflow_id",
+                "name": "Street_PRK",
                 "type": "INTEGER",
                 "nullable": "NO",
-                "description": ""
+                "description": "",
+                "intent": "Unique identifier for the street"
             },
             {
-                "name": "workflow_name",
-                "type": "VARCHAR(255) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "NO",
-                "description": ""
-            },
-            {
-                "name": "incident_type",
-                "type": "VARCHAR(255) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
-                "nullable": "NO",
-                "description": ""
-            },
-            {
-                "name": "created_at",
-                "type": "DATETIME",
+                "name": "strName_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Text field for street name"
             },
             {
-                "name": "updated_at",
-                "type": "DATETIME",
+                "name": "strDescription_MEM",
+                "type": "NTEXT",
                 "nullable": "YES",
-                "description": ""
+                "description": "",
+                "intent": "Text field for street description"
+            },
+            {
+                "name": "strPostCode_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for postal code"
+            },
+            {
+                "name": "RowVersion_RVS",
+                "type": "TIMESTAMP",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Timestamp for row version control"
+            },
+            {
+                "name": "strLocationMapX_FRK",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Foreign key referencing map X location"
+            },
+            {
+                "name": "strMapYPos_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for map Y position"
+            },
+            {
+                "name": "strMapXPos_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for map X position"
+            },
+            {
+                "name": "strMapLocZoom_FLT",
+                "type": "REAL",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for map location zoom level"
+            },
+            {
+                "name": "strADProSiteName_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for ADPro site name"
+            },
+            {
+                "name": "strProIndexOffset_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for Pro index offset"
+            },
+            {
+                "name": "strADProSiteDialIndex_LNG",
+                "type": "INTEGER",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Numeric value for ADPro site dial index"
             }
         ],
-        "primary_key": "workflow_id",
+        "primary_key": "Street_PRK",
+        "foreign_keys": []
+    },
+    {
+        "table_name": "Unit_TBL",
+        "columns": [
+            {
+                "name": "Unit_PRK",
+                "type": "INTEGER",
+                "nullable": "NO",
+                "description": "",
+                "intent": "Unique identifier for the unit"
+            },
+            {
+                "name": "untUnitName_TXT",
+                "type": "NVARCHAR(50) COLLATE \"SQL_Latin1_General_CP1_CI_AS\"",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for unit name"
+            },
+            {
+                "name": "untOtherInfo_MEM",
+                "type": "NTEXT",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Text field for additional unit information"
+            },
+            {
+                "name": "RowVersion_RVS",
+                "type": "TIMESTAMP",
+                "nullable": "YES",
+                "description": "",
+                "intent": "Timestamp for row version control"
+            }
+        ],
+        "primary_key": "Unit_PRK",
         "foreign_keys": []
     }
 ]
